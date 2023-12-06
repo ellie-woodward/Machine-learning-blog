@@ -1,0 +1,11 @@
+{
+  "hash": "9e14b2ede13123bd8541af909a2e537f",
+  "result": {
+    "markdown": "---\ntitle: \"Classification\"\nauthor: \"Ellie Woodward\"\ndate: \"2023-11-23\"\ncategories: [code]\nimage: \"classification.png\"\ntheme:\n  - custom.css\n---\n\n<p style='font-size:23px'>\n&emsp;&emsp; \n</p>\n\n::: {.cell execution_count=1}\n``` {.python .cell-code code-fold=\"true\"}\nimport pandas as pd\nimport numpy as np\nimport geopandas as gpd\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\nimport seaborn as sns\nfrom sklearn.cluster import KMeans\nimport warnings\n```\n:::\n\n\n<p style='font-size:23px'>\n&emsp;&emsp;\n</p>\n<p style='font-size:23px'>\n&emsp;&emsp;\n<p>\n<p style='font-size:23px'>\n&emsp;&emsp;\n</p>\n <p style='font-size:23px'>\n&emsp;&emsp;\n</p>\n\n<br/>\n<br />\n <p style='font-size:15px'>\nThank you!\n</p>\n\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

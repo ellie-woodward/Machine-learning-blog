@@ -1,0 +1,42 @@
+---
+title: "Classification"
+author: "Ellie Woodward"
+date: "2023-11-23"
+categories: [code]
+image: "classification.png"
+theme:
+  - custom.css
+---
+
+<p style='font-size:23px'>
+&emsp;&emsp; 
+</p>
+``` {python}
+#| code-fold: true
+import pandas as pd
+import numpy as np
+import geopandas as gpd
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+import seaborn as sns
+from sklearn.cluster import KMeans
+import warnings
+```
+<p style='font-size:23px'>
+&emsp;&emsp;
+</p>
+<p style='font-size:23px'>
+&emsp;&emsp;
+<p>
+<p style='font-size:23px'>
+&emsp;&emsp;
+</p>
+ <p style='font-size:23px'>
+&emsp;&emsp;
+</p>
+
+<br/>
+<br />
+ <p style='font-size:15px'>
+Thank you!
+</p>

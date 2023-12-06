@@ -1,0 +1,101 @@
+---
+title: "Probablity"
+author: "Ellie Woodward"
+date: "2023-11-01"
+categories: [code]
+image: "dice.jpeg"
+theme:
+  - custom.css
+---
+
+<p style='font-size:23px'>
+&emsp;&emsp; Probability Theory and Random variables are important to machine learning because it is the mathematical foundation for analyzing data. This subject allows data scientists to assess the certainty of outcomes in experiments. One of the ways they can do this is by examining data distributions. Numerical data can come in 2 different forms, discrete or continuous. Discrete data deals with data points that come in a countable form. A good example of a discrete experiment is rolling a dice and seeing what number you get on each roll. Using the Python function diceRoll we can create a Discrete dataset which we can then visualize using a histogram.
+</p>
+```{python}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+import seaborn as sns
+def diceRoll(n):
+    rollsList = []
+    for i in range(n):
+        two_dice = ( np.random.randint(1, 7) + np.random.randint(1, 7) )
+        rollsList.append(two_dice)
+    return rollsList
+
+data = diceRoll(10)
+# print(data)
+bins = np.arange(14) - 0.5
+weights = np.ones_like(data) / len(data)
+plt.hist(data, weights=weights, bins=bins, color="blue", rwidth=0.85)
+plt.title("Probability of Rolling 2 Dice Histogram")
+plt.xlabel("Sum of 10 2 dice rolls")
+plt.ylabel("Probability")
+plt.xticks(range(1,14))
+plt.yticks(np.arange(0, .5, step=0.1))
+# Set axes limit
+plt.xlim(1,13)
+plt.show()
+```
+```{python}
+#| code-fold: true
+
+data = diceRoll(100)
+bins = np.arange(14) - 0.5
+weights = np.ones_like(data) / len(data)
+plt.hist(data, weights=weights, bins=bins, color="blue", rwidth=0.85)
+plt.title("Probability of Rolling 2 Dice Histogram")
+plt.xlabel("Sum of 100 2 dice rolls")
+plt.ylabel("Probability")
+plt.xticks(range(1,14))
+plt.yticks(np.arange(0, .5, step=0.1))
+plt.xlim(1,13)
+plt.show()
+
+data = diceRoll(10000)
+bins = np.arange(14) - 0.5
+weights = np.ones_like(data) / len(data)
+plt.hist(data, weights=weights, bins=bins, color="blue", rwidth=0.85)
+plt.title("Probability of Rolling 2 Dice Histogram")
+plt.xlabel("Sum of 10000 2 dice rolls")
+plt.ylabel("Probability")
+plt.xticks(range(1,14))
+plt.yticks(np.arange(0, .5, step=0.1))
+plt.xlim(1,13)
+plt.show()
+```
+<p style='font-size:23px'>
+&emsp;&emsp;As you can see here with the lower sample size the graph looks more erratic but as the same size increases the distribution becomes more normal. A normal or Gaussian distribution takes on the shape of a bell curve. Also as you can see in the function we are using a random number generator. This randomness is important to any dataset. Random variables help us quantify real-world experiments. They help us capture the center of that random variable distribution with large sample sizes. When we have small sample sizes the random variables don’t help us much, as we can see in the first graph. Once they increase the graph starts to form and we see the true median, which is 7. In this case, our random variables are considered discrete because they only take in values the possible values from a 6-sided dice, 2 - 12.
+</p>
+``` {python} 
+#| code-fold: true
+diamonds = pd.read_csv('../../python-notebooks/datasets/diamonds.csv')
+diamonds.sort_values(by=["price"], ascending=True, inplace=True)
+```
+<p style='font-size:23px'>
+&emsp;&emsp;Continuous probability theory deals with data in a continuous data space. A good example of a continuous data set is price. Price is not a fixed number of values, it can be anything that the seller wants to set it as. In a diamond dataset, I have found online, the prices vary drastically. As you can see from the head and the tail of the data set the prices are 2 completely different numbers, but someone could try and charge double the highest price for a diamond. 
+<p>
+``` {python} 
+diamonds.head()
+```
+``` {python}
+diamonds.tail()
+```
+
+<p style='font-size:23px'>
+&emsp;&emsp;When we put the data into a distribution plot with price on the x-axis and count on the y-axis we can see a graph that makes a nice exponential distribution. This distribution signals to us that the price can go on forever and be as high as the seller wants.
+</p>
+``` {python}
+sns.displot(diamonds["price"])
+```
+
+ <p style='font-size:23px'>
+&emsp;&emsp;Probability and Random variables are important machine learning concepts. In supervised learning, for example, we like to look at the probability of X happening given observed variables Y. These distributions of observed data help us decipher what the outcome should be. Hopefully this blog has helped you understand more about probability distributions, random variables and their influence on machine learning.
+</p>
+
+<br/>
+<br />
+ <p style='font-size:15px'>
+Thank you!
+</p>

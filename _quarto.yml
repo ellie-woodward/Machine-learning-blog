@@ -2,14 +2,14 @@ project:
   type: website
   output-dir: docs
 website:
-  title: "Machine-Learning-Blog"
+  title: ""
   navbar:
     right:
+      - text: "Home"
+        href: index.qmd
       - about.qmd
       - icon: github
-        href: https://github.com/
-      - icon: twitter
-        href: https://twitter.com
+        href: https://github.com/ellie-woodward/Machine-learning-blog
 format:
   html:
     theme: cosmo
