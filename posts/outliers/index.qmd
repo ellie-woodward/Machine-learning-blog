@@ -1,5 +1,5 @@
 ---
-title: "Outlier Detection"
+title: "Enhancing Machine Learning with Outlier Detection"
 author: "Ellie Woodward"
 date: "2023-11-30"
 categories: [code]
@@ -13,28 +13,94 @@ theme:
 </p>
 ``` {python}
 #| code-fold: true
-import pandas as pd
-import numpy as np
-import geopandas as gpd
 import matplotlib.pyplot as plt
-import scipy.stats as stats
 import seaborn as sns
-from sklearn.cluster import KMeans
-import warnings
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import IsolationForest
+from sklearn.metrics import precision_score
+import numpy as np
 ```
 <p style='font-size:23px'>
-&emsp;&emsp; Full Blog post coming by end of day 12/7
+&emsp;&emsp; Detecting and predicting outliers in machine learning is similar to finding the needles in a haystack; it's about identifying data points that deviate from the norm. This process holds value as it helps ensure model accuracy and enhance overall performance. By spotting outliers, machine learning algorithms can avoid being disproportionately influenced by extreme data, thereby preventing skewed predictions or biased results. Removing outliers or treating them appropriately also aids in refining the model's understanding of the underlying patterns within the data, leading to reliable predictions. 
+In the end, spotting outliers boosts the trust and power of machine learning, helping it tackle real-life challenges better and offering valuable insights.
 </p>
 <p style='font-size:23px'>
-&emsp;&emsp;
+&emsp;&emsp;I found a dataset (<a href="https://www.kaggle.com/datasets/chrizzles/swiss-banknote-conterfeit-detection">here</a>) containing measurements of 200 banknotes, each characterized by attributes like length, edge widths, margins, and diagonal length. Split evenly between genuine and counterfeit, this dataset serves as a resource for classifying banknotes based on their dimensional features.
 <p>
+``` {python}
+#| code-fold: true
+df = pd.read_csv("../../python-notebooks/datasets/banknotes.csv")
+df.head()
+```
 <p style='font-size:23px'>
-&emsp;&emsp;
+&emsp;&emsp;We can use Boxplots to visualize the different columns in the dataset and view the outliers.
 </p>
- <p style='font-size:23px'>
-&emsp;&emsp;
-</p>
+``` {python}
+#| code-fold: true
+sns.boxplot(data=df,x=df["Length"])
+plt.title("Boxplot of Swiss Banknote Length ")
+```
+``` {python}
+#| code-fold: true
+sns.boxplot(data=df,x=df["Left"])
+plt.title("Boxplot of Swiss Banknote Left ")
+```
+``` {python}
+#| code-fold: true
+sns.boxplot(data=df,x=df["Right"])
+plt.title("Boxplot of Swiss Banknote Right ")
+```
+``` {python}
+#| code-fold: true
+sns.boxplot(data=df,x=df["Bottom"])
+plt.title("Boxplot of Swiss Banknote Bottom ")
+```
+``` {python}
+#| code-fold: true
+sns.boxplot(data=df,x=df["Top"])
+plt.title("Boxplot of Swiss Banknote Top ")
+```
+``` {python}
+#| code-fold: true
+sns.boxplot(data=df,x=df["Diagonal"])
+plt.title("Boxplot of Swiss Banknote Diagonal ")
+```
 
+ <p style='font-size:23px'>
+&emsp;&emsp;As you can see the box plots for columns: Length, Left, Right, and Top all contain outliers. The next step involves training models using IsolationForest to address and handle these outliers effectively. Isolation is an anomaly detection algorithm used to identify outliers or anomalies in a dataset. It quickly spots anomalies by creating random trees that isolate outliers, as these anomalies typically need fewer steps to separate from the rest of the data. It's a rapid and efficient method, particularly in datasets with many columns, like ours.
+</p>
+``` {python}
+X = df[['Length', 'Left', 'Right', 'Bottom', 'Top', 'Diagonal']]
+y = df['conterfeit']
+X_train, X_test, y_train, y_test = train_test_split(X, y, 
+test_size=0.33, random_state=42)
+clf = IsolationForest(random_state=0)
+clf.fit(X_train)
+y_pred = clf.predict(X_test)
+```
+<p style='font-size:23px'>
+&emsp;&emsp;After preparing for anomaly detection we use the train_test_split function,  the dataset is divided into training and testing sets. An Isolation Forest model, a method commonly used for anomaly detection, is instantiated and trained on the training data. Finally, the trained model predicts anomalies in the test set, flagging instances that deviate from the norm. It also potentially identifies counterfeit banknotes based on their dimensional attributes.
+</p>
+<p style='font-size:23px'>
+&emsp;&emsp;Next, we will convert the predictions into binary values: 1 for outliers (identified by -1) and 0 for normal instances. It then calculates and prints the precision score, measuring how accurately the model identified outliers compared to the actual test labels.
+</p>
+``` {python}
+#| code-fold: true
+pred = pd.DataFrame({'pred': y_pred})
+pred['y_pred'] = np.where(pred['pred'] == -1, 1, 0)
+y_pred = pred['y_pred'] 
+print("Precision Score:", precision_score(y_test, y_pred))
+```
+<p style='font-size:23px'>
+&emsp;&emsp;The precision score of 0.625 underscores the model's proficiency in accurately identifying outliers compared to the total predicted outliers. While demonstrating a substantial ability to spot anomalies, this score also hints at potential areas for refinement or enhancement in the anomaly detection process, ensuring more precise and reliable identification in future analyses.
+</p>
+<p style='font-size:23px'>
+&emsp;&emsp;In this case, outlier detection is important as it aids in distinguishing genuine banknotes from counterfeits based on their dimensional attributes. Identifying outliers among these measurements, such as unusual lengths or irregular margin widths, becomes essential in spotting counterfeit notes that deviate significantly from the norm. By leveraging outlier detection techniques like IsolationForest, the goal is to accurately pinpoint these anomalies, enhancing the ability to spot counterfeit banknotes.
+</p>
+<p style='font-size:23px'>
+&emsp;&emsp;In machine learning, outlier detection forms a fundamental preprocessing step. By cleaning the dataset of outliers, the following machine-learning models become more accurate in classifying genuine versus counterfeit banknotes. Removing outliers ensures that the model isn't influenced by irregular data points, leading to more reliable predictions and a stronger performance overall. Therefore, outlier detection plays a pivotal role in refining the dataset and improving the effectiveness of machine learning algorithms.
+</p>
 <br/>
 <br />
  <p style='font-size:15px'>

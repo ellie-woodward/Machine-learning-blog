@@ -9,7 +9,7 @@
 <meta name="author" content="Ellie Woodward">
 <meta name="dcterms.date" content="2023-11-23">
 
-<title>Classification</title>
+<title>KNN Empowers Fruit Classification Mastery</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -95,6 +95,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -136,7 +139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Classification</h1>
+      <h1 class="title">KNN Empowers Fruit Classification Mastery</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">code</div>
               </div>
@@ -180,31 +183,197 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-execution_count="1">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stats</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsClassifier  <span class="co"># get accuracy by KNN classifier</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> MinMaxScaler</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p style="font-size:23px">
-   Full Blog post coming by end of day 12/7
+   Classification in machine learning is a method used to teach models how to discern and assign predefined categories or classes to input data based on its features or attributes. It’s a foundational concept that serves as the backbone for various tasks, enabling machines to categorize or label data. This ability is crucial in making informed decisions or predictions.
 </p>
 <p style="font-size:23px">
-  
+  Through classification, machines learn patterns from labeled examples. For instance, in the case of this fruit dataset (found <a href="https://www.kaggle.com/datasets/mjamilmoughal/fruits-with-colors-dataset">here</a>), the model learns to associate certain combinations of mass, width, height, and color score with specific fruit types (e.g., apple, mandarin, lemon). By identifying these patterns, the model can then categorize the fruits based on their features into the appropriate classes it has learned. This ability to generalize from known patterns to predict unseen data is the essence of classification.
 </p><p>
 </p><p style="font-size:23px">
-  
+  The dataset contains information about various fruits, comprising attributes such as ‘fruit_label’ (a numerical label assigned to each fruit type), ‘fruit_name’ (the name of the fruit, which includes different types like apple, mandarin, etc.), ‘fruit_subtype’ (subcategories of certain fruits), ‘mass’ (the weight of the fruit in grams), ‘width’ (the width of the fruit), ‘height’ (the height of the fruit), and ‘color_score’ (a score representing the color of the fruit).
+</p>
+<div class="cell" data-execution_count="2">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fruits_df <span class="op">=</span> pd.read_table(<span class="st">'../../python-notebooks/datasets/fruit_data_with_colors.txt'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>fruits_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">fruit_label</th>
+<th data-quarto-table-cell-role="th">fruit_name</th>
+<th data-quarto-table-cell-role="th">fruit_subtype</th>
+<th data-quarto-table-cell-role="th">mass</th>
+<th data-quarto-table-cell-role="th">width</th>
+<th data-quarto-table-cell-role="th">height</th>
+<th data-quarto-table-cell-role="th">color_score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>1</td>
+<td>apple</td>
+<td>granny_smith</td>
+<td>192</td>
+<td>8.4</td>
+<td>7.3</td>
+<td>0.55</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1</td>
+<td>apple</td>
+<td>granny_smith</td>
+<td>180</td>
+<td>8.0</td>
+<td>6.8</td>
+<td>0.59</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1</td>
+<td>apple</td>
+<td>granny_smith</td>
+<td>176</td>
+<td>7.4</td>
+<td>7.2</td>
+<td>0.60</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>2</td>
+<td>mandarin</td>
+<td>mandarin</td>
+<td>86</td>
+<td>6.2</td>
+<td>4.7</td>
+<td>0.80</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>2</td>
+<td>mandarin</td>
+<td>mandarin</td>
+<td>84</td>
+<td>6.0</td>
+<td>4.6</td>
+<td>0.79</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p style="font-size:23px">
+  The graph below effectively visualizes the relationship between the width and height of different fruits, distinguishing each fruit type by color and labeling them in the legend for easy identification. Adjustments can be made to accommodate different fruit types and their respective attributes for visualization.
+</p>
+<div class="cell" data-execution_count="3">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fruit_colors <span class="op">=</span> {<span class="st">'apple'</span>: <span class="st">'green'</span>, <span class="st">'mandarin'</span>: <span class="st">'orange'</span>, <span class="st">'lemon'</span>: <span class="st">'red'</span>}  <span class="co"># Add more colors if needed</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fruit, color <span class="kw">in</span> fruit_colors.items():</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    fruit_data <span class="op">=</span> fruits_df[fruits_df[<span class="st">'fruit_name'</span>] <span class="op">==</span> fruit]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    plt.scatter(fruit_data[<span class="st">'width'</span>], fruit_data[<span class="st">'height'</span>], c<span class="op">=</span>color, label<span class="op">=</span>fruit)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Width'</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Height'</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Fruit Dataset - Width vs Height (Colored by Fruit Name)'</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">'Fruit Name'</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-4-output-1.png" width="590" height="449"></p>
+</div>
+</div>
+<p style="font-size:23px">
+  As we can see in the scatter plot above the fruits tend to group themselves based on height and width. Now lets train the data using train_test_split.
+</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>feature_names <span class="op">=</span> [<span class="st">'mass'</span>, <span class="st">'width'</span>, <span class="st">'height'</span>, <span class="st">'color_score'</span>]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>x<span class="op">=</span>fruits_df[feature_names]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>y<span class="op">=</span>fruits_df[<span class="st">'fruit_label'</span>]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>x_train, x_test, y_train, y_test <span class="op">=</span> train_test_split(x,y, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(x_train[:<span class="dv">3</span>])</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> MinMaxScaler()</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>x_train<span class="op">=</span>scaler.fit_transform(x_train)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>x_test<span class="op">=</span> scaler.transform(x_test)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">After scaling</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(x_train[:<span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    mass  width  height  color_score
+42   154    7.2     7.2         0.82
+48   174    7.3    10.1         0.72
+7     76    5.8     4.0         0.81
+
+After scaling
+
+[[0.27857143 0.41176471 0.49230769 0.72972973]
+ [0.35       0.44117647 0.93846154 0.45945946]
+ [0.         0.         0.         0.7027027 ]]</code></pre>
+</div>
+</div>
+<p style="font-size:23px">
+  After scaling seen above, the values displayed represent the same three fruits, but the feature values have been transformed. Each feature value is now proportionally represented between 0 and 1 based on its original range in the dataset. These scaled values are essential for model training as they provide a consistent scale for all features, preventing one particular feature from dominating the learning process due to its higher magnitude. This standardized representation allows the model to learn effectively from the data and make unbiased predictions without the influence of varying feature scales.
 </p>
 <p style="font-size:23px">
-  
+  Now we will find the accuracy of the training data on a KNeighborsClassifier. The accuracy scores on both the training and test sets help assess the KNN model’s performance. A high accuracy score on the training set suggests that the model learned well from the training data. However, the test set accuracy is more crucial, as it indicates how effectively the model can predict fruit types on new, unseen data, reflecting its overall performance and ability to generalize to new instances. Comparing these scores helps gauge the model’s performance and assess the potential for overfitting (if the training accuracy is significantly higher than the test accuracy).
+</p>
+<div class="cell" data-execution_count="5">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>knn <span class="op">=</span> KNeighborsClassifier()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>knn.fit(x_train, y_train)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Accuracy of KNN classifier on training set:</span><span class="sc">{:.2f}</span><span class="st">'</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>     .<span class="bu">format</span>(knn.score(x_train, y_train)))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Accuracy of KNN Classifier on test set:</span><span class="sc">{:.2f}</span><span class="st">'</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>     .<span class="bu">format</span>(knn.score(x_test, y_test)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Accuracy of KNN classifier on training set:0.95
+Accuracy of KNN Classifier on test set:1.00</code></pre>
+</div>
+</div>
+<p style="font-size:23px">
+  The accuracy of the training set suggests that the KNN classifier achieved an accuracy of 95%. The accuracy score represents the proportion of correctly predicted fruit labels by the model compared to the total number of fruits in the training dataset. A score of 0.95 suggests that the model accurately predicted the fruit types for 95% of the instances in the dataset used for training.
+</p>
+<p style="font-size:23px">
+  The accuracy of the test set indicates that the KNN classifier achieved a perfect accuracy score of 100%. The accuracy score on the test set represents the model’s ability to generalize and make accurate predictions on new, unseen data (not used during training). A score of 100% means that the model correctly classified all the fruit instances in the test dataset.
+</p>
+<p style="font-size:23px">
+  In summary, the KNN classifier exhibited strong performance on both the training and test datasets. A high accuracy score on the test set (1.00) suggests that the model generalized exceptionally well to new data, correctly predicting all fruit types. Meanwhile, the slightly lower training set accuracy (0.95) indicates that the model performed slightly worse on the data it was trained on, potentially suggesting a small amount of overfitting or a minor limitation in capturing certain complexities present in the training data. Overall, these scores suggest that the KNN classifier is performing very well in classifying fruit types based on the provided features.
+</p>
+<p style="font-size:23px">
+  In conclusion, these results underline the importance of effective model training and evaluation. The strong performance of the model on the test set indicates its ability to generalize well to unseen data, a crucial aspect in real-world applications. Classification, as demonstrated here, plays a pivotal role in various domains, allowing machines to classify data into distinct categories or classes, enabling tasks like spam detection, medical diagnosis, image recognition, and more. High-performing classification models facilitate informed decision-making, automation, and pattern recognition, showcasing their critical role in advancing machine learning applications.
 </p>
 <br> <br>
 <p style="font-size:15px">
 Thank you!
+</p>
+<p style="font-size:15px">
+References: <a href="https://www.ibm.com/topics/knn">IBM KNN</a> | <a href="https://medium.com/analytics-vidhya/classification-in-machine-learning-ed30753d9461">Classification</a>
 </p>
 
 

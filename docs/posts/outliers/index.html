@@ -9,7 +9,7 @@
 <meta name="author" content="Ellie Woodward">
 <meta name="dcterms.date" content="2023-11-30">
 
-<title>Outlier Detection</title>
+<title>Enhancing Machine Learning with Outlier Detection</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -95,6 +95,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -136,7 +139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Outlier Detection</h1>
+      <h1 class="title">Enhancing Machine Learning with Outlier Detection</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">code</div>
               </div>
@@ -180,27 +183,220 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-execution_count="1">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stats</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> IsolationForest</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> precision_score</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p style="font-size:23px">
-   Full Blog post coming by end of day 12/7
+   Detecting and predicting outliers in machine learning is similar to finding the needles in a haystack; it’s about identifying data points that deviate from the norm. This process holds value as it helps ensure model accuracy and enhance overall performance. By spotting outliers, machine learning algorithms can avoid being disproportionately influenced by extreme data, thereby preventing skewed predictions or biased results. Removing outliers or treating them appropriately also aids in refining the model’s understanding of the underlying patterns within the data, leading to reliable predictions. In the end, spotting outliers boosts the trust and power of machine learning, helping it tackle real-life challenges better and offering valuable insights.
 </p>
 <p style="font-size:23px">
-  
+  I found a dataset (<a href="https://www.kaggle.com/datasets/chrizzles/swiss-banknote-conterfeit-detection">here</a>) containing measurements of 200 banknotes, each characterized by attributes like length, edge widths, margins, and diagonal length. Split evenly between genuine and counterfeit, this dataset serves as a resource for classifying banknotes based on their dimensional features.
 </p><p>
-</p><p style="font-size:23px">
-  
+</p><div class="cell" data-execution_count="2">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"../../python-notebooks/datasets/banknotes.csv"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="34">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">conterfeit</th>
+<th data-quarto-table-cell-role="th">Length</th>
+<th data-quarto-table-cell-role="th">Left</th>
+<th data-quarto-table-cell-role="th">Right</th>
+<th data-quarto-table-cell-role="th">Bottom</th>
+<th data-quarto-table-cell-role="th">Top</th>
+<th data-quarto-table-cell-role="th">Diagonal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0</td>
+<td>214.8</td>
+<td>131.0</td>
+<td>131.1</td>
+<td>9.0</td>
+<td>9.7</td>
+<td>141.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0</td>
+<td>214.6</td>
+<td>129.7</td>
+<td>129.7</td>
+<td>8.1</td>
+<td>9.5</td>
+<td>141.7</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>0</td>
+<td>214.8</td>
+<td>129.7</td>
+<td>129.7</td>
+<td>8.7</td>
+<td>9.6</td>
+<td>142.2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>0</td>
+<td>214.8</td>
+<td>129.7</td>
+<td>129.6</td>
+<td>7.5</td>
+<td>10.4</td>
+<td>142.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>0</td>
+<td>215.0</td>
+<td>129.6</td>
+<td>129.7</td>
+<td>10.4</td>
+<td>7.7</td>
+<td>141.8</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p style="font-size:23px">
+  We can use Boxplots to visualize the different columns in the dataset and view the outliers.
+</p>
+<div class="cell" data-execution_count="3">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>df,x<span class="op">=</span>df[<span class="st">"Length"</span>])</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Boxplot of Swiss Banknote Length "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="35">
+<pre><code>Text(0.5, 1.0, 'Boxplot of Swiss Banknote Length ')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-4-output-2.png" width="545" height="449"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="4">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>df,x<span class="op">=</span>df[<span class="st">"Left"</span>])</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Boxplot of Swiss Banknote Left "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="36">
+<pre><code>Text(0.5, 1.0, 'Boxplot of Swiss Banknote Left ')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-5-output-2.png" width="545" height="449"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>df,x<span class="op">=</span>df[<span class="st">"Right"</span>])</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Boxplot of Swiss Banknote Right "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="37">
+<pre><code>Text(0.5, 1.0, 'Boxplot of Swiss Banknote Right ')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-6-output-2.png" width="545" height="449"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>df,x<span class="op">=</span>df[<span class="st">"Bottom"</span>])</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Boxplot of Swiss Banknote Bottom "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="38">
+<pre><code>Text(0.5, 1.0, 'Boxplot of Swiss Banknote Bottom ')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-7-output-2.png" width="545" height="449"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="7">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>df,x<span class="op">=</span>df[<span class="st">"Top"</span>])</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Boxplot of Swiss Banknote Top "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="39">
+<pre><code>Text(0.5, 1.0, 'Boxplot of Swiss Banknote Top ')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-8-output-2.png" width="545" height="449"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>df,x<span class="op">=</span>df[<span class="st">"Diagonal"</span>])</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Boxplot of Swiss Banknote Diagonal "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="40">
+<pre><code>Text(0.5, 1.0, 'Boxplot of Swiss Banknote Diagonal ')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-9-output-2.png" width="545" height="449"></p>
+</div>
+</div>
+<p style="font-size:23px">
+  As you can see the box plots for columns: Length, Left, Right, and Top all contain outliers. The next step involves training models using IsolationForest to address and handle these outliers effectively. Isolation is an anomaly detection algorithm used to identify outliers or anomalies in a dataset. It quickly spots anomalies by creating random trees that isolate outliers, as these anomalies typically need fewer steps to separate from the rest of the data. It’s a rapid and efficient method, particularly in datasets with many columns, like ours.
+</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df[[<span class="st">'Length'</span>, <span class="st">'Left'</span>, <span class="st">'Right'</span>, <span class="st">'Bottom'</span>, <span class="st">'Top'</span>, <span class="st">'Diagonal'</span>]]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df[<span class="st">'conterfeit'</span>]</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>test_size<span class="op">=</span><span class="fl">0.33</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> IsolationForest(random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>clf.fit(X_train)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> clf.predict(X_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p style="font-size:23px">
+  After preparing for anomaly detection we use the train_test_split function, the dataset is divided into training and testing sets. An Isolation Forest model, a method commonly used for anomaly detection, is instantiated and trained on the training data. Finally, the trained model predicts anomalies in the test set, flagging instances that deviate from the norm. It also potentially identifies counterfeit banknotes based on their dimensional attributes.
 </p>
 <p style="font-size:23px">
-  
+  Next, we will convert the predictions into binary values: 1 for outliers (identified by -1) and 0 for normal instances. It then calculates and prints the precision score, measuring how accurately the model identified outliers compared to the actual test labels.
+</p>
+<div class="cell" data-execution_count="10">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> pd.DataFrame({<span class="st">'pred'</span>: y_pred})</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>pred[<span class="st">'y_pred'</span>] <span class="op">=</span> np.where(pred[<span class="st">'pred'</span>] <span class="op">==</span> <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> pred[<span class="st">'y_pred'</span>] </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Precision Score:"</span>, precision_score(y_test, y_pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Precision Score: 0.625</code></pre>
+</div>
+</div>
+<p style="font-size:23px">
+  The precision score of 0.625 underscores the model’s proficiency in accurately identifying outliers compared to the total predicted outliers. While demonstrating a substantial ability to spot anomalies, this score also hints at potential areas for refinement or enhancement in the anomaly detection process, ensuring more precise and reliable identification in future analyses.
+</p>
+<p style="font-size:23px">
+  In this case, outlier detection is important as it aids in distinguishing genuine banknotes from counterfeits based on their dimensional attributes. Identifying outliers among these measurements, such as unusual lengths or irregular margin widths, becomes essential in spotting counterfeit notes that deviate significantly from the norm. By leveraging outlier detection techniques like IsolationForest, the goal is to accurately pinpoint these anomalies, enhancing the ability to spot counterfeit banknotes.
+</p>
+<p style="font-size:23px">
+  In machine learning, outlier detection forms a fundamental preprocessing step. By cleaning the dataset of outliers, the following machine-learning models become more accurate in classifying genuine versus counterfeit banknotes. Removing outliers ensures that the model isn’t influenced by irregular data points, leading to more reliable predictions and a stronger performance overall. Therefore, outlier detection plays a pivotal role in refining the dataset and improving the effectiveness of machine learning algorithms.
 </p>
 <br> <br>
 <p style="font-size:15px">

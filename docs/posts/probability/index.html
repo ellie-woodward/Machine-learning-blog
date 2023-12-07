@@ -9,7 +9,7 @@
 <meta name="author" content="Ellie Woodward">
 <meta name="dcterms.date" content="2023-11-01">
 
-<title>Probablity</title>
+<title>Probablity with Diamonds</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -139,7 +139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Probablity</h1>
+      <h1 class="title">Probablity with Diamonds</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">code</div>
               </div>
@@ -178,7 +178,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p style="font-size:23px">
-   Probability Theory and Random variables are important to machine learning because it is the mathematical foundation for analyzing data. This subject allows data scientists to assess the certainty of outcomes in experiments. One of the ways they can do this is by examining data distributions. Numerical data can come in 2 different forms, discrete or continuous. Discrete data deals with data points that come in a countable form. A good example of a discrete experiment is rolling a dice and seeing what number you get on each roll. Using the Python function diceRoll we can create a Discrete dataset which we can then visualize using a histogram.
+   Probability theory and random variables underpin machine learning by providing the mathematical framework for data analysis. They empower data scientists to evaluate the likelihood of outcomes in experiments. This includes examining data distributions, which classify numerical data into two distinct forms: discrete and continuous. Discrete data involves countable data points, as seen in experiments like rolling a dice and recording the resulting numbers. Utilizing Python’s diceRoll function enables the creation of a discrete dataset, visualizable through a histogram.
 </p>
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -245,7 +245,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p style="font-size:23px">
-  As you can see here with the lower sample size the graph looks more erratic but as the same size increases the distribution becomes more normal. A normal or Gaussian distribution takes on the shape of a bell curve. Also as you can see in the function we are using a random number generator. This randomness is important to any dataset. Random variables help us quantify real-world experiments. They help us capture the center of that random variable distribution with large sample sizes. When we have small sample sizes the random variables don’t help us much, as we can see in the first graph. Once they increase the graph starts to form and we see the true median, which is 7. In this case, our random variables are considered discrete because they only take in values the possible values from a 6-sided dice, 2 - 12.
+  In the initial graph with a lower sample size, the plot appears more erratic. However, as the sample size increases, the distribution tends toward normality, resembling a bell curve typical of a Gaussian distribution. The function employs a random number generator, crucial for any dataset as randomness characterizes real-world scenarios. Random variables aid in quantifying these real-world experiments, particularly in capturing the central tendency of their distributions with larger sample sizes. With smaller samples, the impact of random variables is limited, as depicted in the initial graph. But as sample sizes grow, the graph takes shape, revealing the true median, which, in this case, is 7. These random variables, in this context, are considered discrete due to their limited range of possible values derived from a 6-sided dice, specifically ranging from 2 to 12.
 </p>
 <div class="cell" data-execution_count="3">
 <details>
@@ -255,7 +255,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <p style="font-size:23px">
-  Continuous probability theory deals with data in a continuous data space. A good example of a continuous data set is price. Price is not a fixed number of values, it can be anything that the seller wants to set it as. In a diamond dataset, I have found online, the prices vary drastically. As you can see from the head and the tail of the data set the prices are 2 completely different numbers, but someone could try and charge double the highest price for a diamond.
+  Continuous probability theory operates within a continuous data space, where values exist across a spectrum rather than discrete points. Take, for instance, prices—they are not confined to specific values but can vary extensively based on seller discretion. In a diamond dataset obtained online, the prices showcase significant variability. By examining the head (the lowest values) and the tail (the highest values) of the dataset, one can observe starkly different price points. Additionally, the range of prices can be considerable, allowing for the possibility of someone charging double the highest price for a diamond, illustrating the wide span of potential values within continuous datasets like these.
 </p><p>
 </p><div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>diamonds.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -446,7 +446,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p style="font-size:23px">
-  When we put the data into a distribution plot with price on the x-axis and count on the y-axis we can see a graph that makes a nice exponential distribution. This distribution signals to us that the price can go on forever and be as high as the seller wants.
+  When we plot the data with price on the x-axis and count on the y-axis, it often shows an exponential distribution. This suggests that prices have no upper limit—they can keep rising as high as the seller wants.
 </p>
 <div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sns.displot(diamonds[<span class="st">"price"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -455,7 +455,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p style="font-size:23px">
-  Probability and Random variables are important machine learning concepts. In supervised learning, for example, we like to look at the probability of X happening given observed variables Y. These distributions of observed data help us decipher what the outcome should be. Hopefully this blog has helped you understand more about probability distributions, random variables and their influence on machine learning.
+  Probability and random variables are vital in machine learning. In supervised learning, we analyze the probability of X occurring based on observed variables Y. Understanding these distributions of observed data assists us in predicting outcomes. Hopefully, this blog has shed light on probability distributions, random variables, and their impact on machine learning.
 </p>
 <br> <br>
 <p style="font-size:15px">
