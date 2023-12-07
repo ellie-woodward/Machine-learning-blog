@@ -11,7 +11,7 @@
     "href": "posts/outliers/index.html",
     "title": "Outlier Detection",
     "section": "",
-    "text": "Code\nimport pandas as pd\nimport numpy as np\nimport geopandas as gpd\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\nimport seaborn as sns\nfrom sklearn.cluster import KMeans\nimport warnings\n\n\n\n  \n\n\n  \n\n\n  \n\n\n  \n\n \n\nThank you!"
+    "text": "Code\nimport pandas as pd\nimport numpy as np\nimport geopandas as gpd\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\nimport seaborn as sns\nfrom sklearn.cluster import KMeans\nimport warnings\n\n\n\n   Full Blog post coming by end of day 12/7\n\n\n  \n\n\n  \n\n\n  \n\n \n\nThank you!"
   },
   {
     "objectID": "posts/welcome/index.html",
@@ -32,7 +32,7 @@
     "href": "posts/Classification/index.html",
     "title": "Classification",
     "section": "",
-    "text": "Code\nimport pandas as pd\nimport numpy as np\nimport geopandas as gpd\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\nimport seaborn as sns\nfrom sklearn.cluster import KMeans\nimport warnings\n\n\n\n  \n\n\n  \n\n\n  \n\n\n  \n\n \n\nThank you!"
+    "text": "Code\nimport pandas as pd\nimport numpy as np\nimport geopandas as gpd\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\nimport seaborn as sns\nfrom sklearn.cluster import KMeans\nimport warnings\n\n\n\n   Full Blog post coming by end of day 12/7\n\n\n  \n\n\n  \n\n\n  \n\n \n\nThank you!"
   },
   {
     "objectID": "posts/probability/index.html",
@@ -53,6 +53,6 @@
     "href": "index.html",
     "title": "Ellie’s Machine Learning Blog",
     "section": "",
-    "text": "Outlier Detection\n\n\n\n\n\n\n\ncode\n\n\n\n\n\n\n\n\n\n\n\nNov 30, 2023\n\n\nEllie Woodward\n\n\n\n\n\n\n  \n\n\n\n\nClassification\n\n\n\n\n\n\n\ncode\n\n\n\n\n\n\n\n\n\n\n\nNov 23, 2023\n\n\nEllie Woodward\n\n\n\n\n\n\n  \n\n\n\n\nDecoding Data with Linear Regression: Predictions & Insights\n\n\n\n\n\n\n\ncode\n\n\n\n\n\n\n\n\n\n\n\nNov 20, 2023\n\n\nEllie Woodward\n\n\n\n\n\n\n  \n\n\n\n\nUnearthing Insights: Clustering Earthquake Data for Patterns\n\n\n\n\n\n\n\ncode\n\n\n\n\n\n\n\n\n\n\n\nNov 10, 2023\n\n\nEllie Woodward\n\n\n\n\n\n\n  \n\n\n\n\nProbablity\n\n\n\n\n\n\n\ncode\n\n\n\n\n\n\n\n\n\n\n\nNov 1, 2023\n\n\nEllie Woodward\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nAug 20, 2023\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+    "text": "Outlier Detection\n\n\n\n\n\n\n\ncode\n\n\n\n\n\n\n\n\n\n\n\nNov 30, 2023\n\n\nEllie Woodward\n\n\n\n\n\n\n  \n\n\n\n\nClassification\n\n\n\n\n\n\n\ncode\n\n\n\n\n\n\n\n\n\n\n\nNov 23, 2023\n\n\nEllie Woodward\n\n\n\n\n\n\n  \n\n\n\n\nDecoding Data with Linear Regression: Predictions & Insights\n\n\n\n\n\n\n\ncode\n\n\n\n\n\n\n\n\n\n\n\nNov 20, 2023\n\n\nEllie Woodward\n\n\n\n\n\n\n  \n\n\n\n\nUnearthing Insights: Clustering Earthquake Data for Patterns\n\n\n\n\n\n\n\ncode\n\n\n\n\n\n\n\n\n\n\n\nNov 10, 2023\n\n\nEllie Woodward\n\n\n\n\n\n\n  \n\n\n\n\nProbablity\n\n\n\n\n\n\n\ncode\n\n\n\n\n\n\n\n\n\n\n\nNov 1, 2023\n\n\nEllie Woodward\n\n\n\n\n\n\nNo matching items"
   }
 ]

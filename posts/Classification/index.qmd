@@ -23,7 +23,7 @@ from sklearn.cluster import KMeans
 import warnings
 ```
 <p style='font-size:23px'>
-&emsp;&emsp;
+&emsp;&emsp; Full Blog post coming by end of day 12/7
 </p>
 <p style='font-size:23px'>
 &emsp;&emsp;
