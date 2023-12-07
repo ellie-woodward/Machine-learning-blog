@@ -9,7 +9,7 @@
 <meta name="author" content="Ellie Woodward">
 <meta name="dcterms.date" content="2023-11-20">
 
-<title>Linear Regression</title>
+<title>Decoding Data with Linear Regression: Predictions &amp; Insights</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -95,6 +95,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -136,7 +139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Linear Regression</h1>
+      <h1 class="title">Decoding Data with Linear Regression: Predictions &amp; Insights</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">code</div>
               </div>
@@ -182,29 +185,241 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stats</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p style="font-size:23px">
-  
+  In the realm of machine learning, predictive modeling stands as a strong force for reshaping industries and driving innovation. At the core of this field lies linear regression, a fundamental yet powerful statistical technique that serves as a cornerstone for making predictions based on data. Imagine we have data points that represent things like house prices and their sizes. Linear regression helps find a straight line that best fits these points, allowing you to predict the price of a house based on its size. In machine learning predicting this outcome based on the input data can help us predict future prices or see trends. Linear regression is commonly used in all different types of industries, it helps companies make informed decisions.
 </p>
 <p style="font-size:23px">
-  
+  Marketing and advertising industries heavily rely on trend analysis. In pursuit of understanding these trends, I obtained a dataset from <a href="https://www.kaggle.com/datasets/ashydv/advertising-dataset/">Kaggle.com</a> that details sales figures correlated with expenditures on TV, newspaper, and radio advertising.
 </p><p>
-</p><p style="font-size:23px">
-  
+</p><div class="cell" data-execution_count="2">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>advertisement_df <span class="op">=</span> pd.read_csv(<span class="st">"../../python-notebooks/datasets/advertising.csv"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>advertisement_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">TV</th>
+<th data-quarto-table-cell-role="th">Radio</th>
+<th data-quarto-table-cell-role="th">Newspaper</th>
+<th data-quarto-table-cell-role="th">Sales</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>230.1</td>
+<td>37.8</td>
+<td>69.2</td>
+<td>22.1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>44.5</td>
+<td>39.3</td>
+<td>45.1</td>
+<td>10.4</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>17.2</td>
+<td>45.9</td>
+<td>69.3</td>
+<td>12.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>151.5</td>
+<td>41.3</td>
+<td>58.5</td>
+<td>16.5</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>180.8</td>
+<td>10.8</td>
+<td>58.4</td>
+<td>17.9</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p style="font-size:23px">
+  Our primary focus lies in assessing the correlation between TV advertisement spending, radio advertisement and sales. Initially, we’ll improve the dataset by eliminating irrelevant columns and then juxtapose the pertinent data for analysis.
+</p>
+<div class="cell" data-execution_count="3">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>advertisement_df.drop(columns<span class="op">=</span>[<span class="st">'Newspaper'</span>], inplace <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>sns.pairplot(advertisement_df, x_vars<span class="op">=</span>[<span class="st">'TV'</span>, <span class="st">'Radio'</span>], y_vars<span class="op">=</span><span class="st">'Sales'</span>, height<span class="op">=</span><span class="dv">4</span>, aspect<span class="op">=</span><span class="dv">1</span>, kind<span class="op">=</span><span class="st">'scatter'</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-4-output-1.png" width="758" height="382"></p>
+</div>
+</div>
+<p style="font-size:23px">
+  Upon observation, the Radio data exhibits considerably higher dispersion compared to the TV data. Moving forward, our aim is to train a linear model. Employing the ‘train_test_split’ technique, we’ll allocate 70% of the data for training and 30% for testing, separately for both TV and radio datasets.
+</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x_tv <span class="op">=</span> advertisement_df[[<span class="st">'TV'</span>]]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y_tv <span class="op">=</span> advertisement_df[<span class="st">'Sales'</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>x_train, x_test, y_train, y_test <span class="op">=</span> train_test_split(x_tv, y_tv, test_size <span class="op">=</span> <span class="fl">0.3</span>, random_state <span class="op">=</span> <span class="dv">100</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>x_radio <span class="op">=</span> advertisement_df[[<span class="st">'Radio'</span>]]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>y_radio <span class="op">=</span> advertisement_df[<span class="st">'Sales'</span>]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>x_train_radio, x_test_radio, y_train_radio, y_test_radio <span class="op">=</span> train_test_split(x_radio, y_radio, test_size <span class="op">=</span> <span class="fl">0.3</span>, random_state <span class="op">=</span> <span class="dv">100</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>lrm_tv <span class="op">=</span> LinearRegression().fit(x_train, y_train)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>lrm_radio <span class="op">=</span> LinearRegression().fit(x_train_radio, y_train_radio) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="5">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(x_test,y_test)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"$ amount spent on TV advertising"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Number of sales"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Number of sales per amount spent on TV ads"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-6-output-1.png" width="597" height="449"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(x_test_radio,y_test_radio)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"$ amount spent on Radio advertising"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Number of sales"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Number of sales per amount spent on Radio ads"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-7-output-1.png" width="597" height="449"></p>
+</div>
+</div>
+<p style="font-size:23px">
+  Our visual analysis echoes previous observations. The TV dataset exhibits a more compact ascending structure, suggesting a positive linear relationship, while the radio dataset diverges noticeably. Subsequently, we’ll utilize the trained linear regression model to predict sales for both TV and radio advertising channels.
+</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>y_pred_lrm_tv<span class="op">=</span> lrm_tv.predict(x_test)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>y_pred_lrm_radio<span class="op">=</span> lrm_radio.predict(x_test_radio)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>lrm_diff <span class="op">=</span> pd.DataFrame({<span class="st">'Actual Sales'</span>: y_test, <span class="st">'Predicted Sales for TV'</span>: y_pred_lrm_tv, </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                         <span class="st">'Predicted Sales for Radio'</span>: y_pred_lrm_radio})</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>lrm_diff.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Actual Sales</th>
+<th data-quarto-table-cell-role="th">Predicted Sales for TV</th>
+<th data-quarto-table-cell-role="th">Predicted Sales for Radio</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">126</td>
+<td>6.6</td>
+<td>7.374140</td>
+<td>16.985157</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">104</td>
+<td>20.7</td>
+<td>19.941482</td>
+<td>16.415126</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">99</td>
+<td>17.2</td>
+<td>14.323269</td>
+<td>17.332133</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">92</td>
+<td>19.4</td>
+<td>18.823294</td>
+<td>16.315990</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">111</td>
+<td>21.8</td>
+<td>20.132392</td>
+<td>16.873629</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p style="font-size:23px">
+  While the model’s predictions for TV advertisement sales align closely with actual figures, its performance in predicting radio advertisement sales falls significantly short. This discrepancy signals that a linear model might not be suitable for radio advertising, which we’ll corroborate by graphing the data.
+</p>
+<div class="cell" data-execution_count="8">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(x_test,y_test)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>plt.plot(x_test, y_pred_lrm_tv, <span class="st">'Red'</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"$ amount spent on TV advertising"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Number of sales"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Number of sales per amount spent on TV ads"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<pre><code>Text(0.5, 1.0, 'Number of sales per amount spent on TV ads')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-9-output-2.png" width="597" height="449"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(x_test_radio,y_test_radio)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>plt.plot(x_test_radio, y_pred_lrm_radio, <span class="st">'Red'</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"$ amount spent on Radio advertising"</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Number of sales"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Number of sales per amount spent on Radio ads"</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-10-output-1.png" width="597" height="449"></p>
+</div>
+</div>
+<p style="font-size:23px">
+  Comparing the two graphs highlights the clear linear relationship between TV advertisement spending and sales, contrasting with the inconsistency in radio advertising. The limitations of the linear model’s fit to the radio data suggest a need for non-linear regression, indicating a potential requirement for a more curved or complex model to better represent this relationship.
 </p>
 <p style="font-size:23px">
-  
+  Insights learned from this visualization suggest that the company’s sales potential significantly benefits from TV advertising over radio. Armed with this data, a marketer could assert, “Increased investment in TV advertising directly correlates with higher sales.” Conversely, the erratic nature of radio advertising data may prompt a recommendation to reconsider its budget allocation due to its scattered and less predictable impact on sales.
+</p>
+<p style="font-size:23px">
+  Linear regression, a fundamental tool in machine learning, enables us to decipher relationships between variables. Our analysis highlighted its efficacy in predicting sales based on TV advertising spending. In conclusion, linear regression helps us with uncovering correlations, making predictions, guiding decisions, and so much more, becoming a versatile tool across diverse fields of study and application.
 </p>
 <br> <br>
 <p style="font-size:15px">
 Thank you!
+</p>
+<p style="font-size:15px">
+References: <a href="https://www.ibm.com/topics/linear-regression">IBM Linear Regression</a>
 </p>
 
 

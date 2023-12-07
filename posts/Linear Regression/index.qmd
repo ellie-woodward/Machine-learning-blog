@@ -1,5 +1,5 @@
 ---
-title: "Linear Regression"
+title: "Decoding Data with Linear Regression: Predictions & Insights"
 author: "Ellie Woodward"
 date: "2023-11-20"
 categories: [code]
@@ -15,28 +15,106 @@ theme:
 #| code-fold: true
 import pandas as pd
 import numpy as np
-import geopandas as gpd
 import matplotlib.pyplot as plt
-import scipy.stats as stats
 import seaborn as sns
-from sklearn.cluster import KMeans
-import warnings
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
 ```
 <p style='font-size:23px'>
-&emsp;&emsp;
+&emsp;&emsp;In the realm of machine learning, predictive modeling stands as a strong force for reshaping industries and driving innovation. At the core of this field lies linear regression, a fundamental yet powerful statistical technique that serves as a cornerstone for making predictions based on data. Imagine we have data points that represent things like house prices and their sizes. Linear regression helps find a straight line that best fits these points, allowing you to predict the price of a house based on its size. In machine learning predicting this outcome based on the input data can help us predict future prices or see trends. Linear regression is commonly used in all different types of industries, it helps companies make informed decisions. 
 </p>
 <p style='font-size:23px'>
-&emsp;&emsp;
+&emsp;&emsp;Marketing and advertising industries heavily rely on trend analysis. In pursuit of understanding these trends, I obtained a dataset from <a href="https://www.kaggle.com/datasets/ashydv/advertising-dataset/">Kaggle.com</a> that details sales figures correlated with expenditures on TV, newspaper, and radio advertising.
 <p>
+``` {python}
+#| code-fold: true
+advertisement_df = pd.read_csv("../../python-notebooks/datasets/advertising.csv")
+advertisement_df.head()
+```
 <p style='font-size:23px'>
-&emsp;&emsp;
+&emsp;&emsp;Our primary focus lies in assessing the correlation between TV advertisement spending, radio advertisement and sales. Initially, we'll improve the dataset by eliminating irrelevant columns and then juxtapose the pertinent data for analysis.
+</p>
+``` {python}
+#| code-fold: true
+advertisement_df.drop(columns=['Newspaper'], inplace = True)
+sns.pairplot(advertisement_df, x_vars=['TV', 'Radio'], y_vars='Sales', height=4, aspect=1, kind='scatter')
+plt.show()
+```
+ <p style='font-size:23px'>
+&emsp;&emsp;Upon observation, the Radio data exhibits considerably higher dispersion compared to the TV data. Moving forward, our aim is to train a linear model. Employing the 'train_test_split' technique, we'll allocate 70% of the data for training and 30% for testing, separately for both TV and radio datasets.
+</p>
+``` {python}
+x_tv = advertisement_df[['TV']]
+y_tv = advertisement_df['Sales']
+x_train, x_test, y_train, y_test = train_test_split(x_tv, y_tv, test_size = 0.3, random_state = 100)
+x_radio = advertisement_df[['Radio']]
+y_radio = advertisement_df['Sales']
+x_train_radio, x_test_radio, y_train_radio, y_test_radio = train_test_split(x_radio, y_radio, test_size = 0.3, random_state = 100)
+lrm_tv = LinearRegression().fit(x_train, y_train)
+lrm_radio = LinearRegression().fit(x_train_radio, y_train_radio) 
+```
+``` {python}
+#| code-fold: true
+plt.scatter(x_test,y_test)
+plt.xlabel("$ amount spent on TV advertising")
+plt.ylabel("Number of sales")
+
+plt.title("Number of sales per amount spent on TV ads")
+plt.show()
+```
+``` {python}
+#| code-fold: true
+plt.scatter(x_test_radio,y_test_radio)
+plt.xlabel("$ amount spent on Radio advertising")
+plt.ylabel("Number of sales")
+plt.title("Number of sales per amount spent on Radio ads")
+plt.show()
+```
+ <p style='font-size:23px'>
+&emsp;&emsp;Our visual analysis echoes previous observations. The TV dataset exhibits a more compact ascending structure, suggesting a positive linear relationship, while the radio dataset diverges noticeably. Subsequently, we'll utilize the trained linear regression model to predict sales for both TV and radio advertising channels.
+</p>
+``` {python}
+y_pred_lrm_tv= lrm_tv.predict(x_test)
+y_pred_lrm_radio= lrm_radio.predict(x_test_radio)
+lrm_diff = pd.DataFrame({'Actual Sales': y_test, 'Predicted Sales for TV': y_pred_lrm_tv, 
+                         'Predicted Sales for Radio': y_pred_lrm_radio})
+lrm_diff.head()
+```
+ <p style='font-size:23px'>
+&emsp;&emsp;While the model's predictions for TV advertisement sales align closely with actual figures, its performance in predicting radio advertisement sales falls significantly short. This discrepancy signals that a linear model might not be suitable for radio advertising, which we'll corroborate by graphing the data.
+</p>
+``` {python}
+#| code-fold: true
+plt.scatter(x_test,y_test)
+plt.plot(x_test, y_pred_lrm_tv, 'Red')
+plt.xlabel("$ amount spent on TV advertising")
+plt.ylabel("Number of sales")
+plt.title("Number of sales per amount spent on TV ads")
+```
+``` {python}
+#| code-fold: true
+plt.scatter(x_test_radio,y_test_radio)
+plt.plot(x_test_radio, y_pred_lrm_radio, 'Red')
+plt.xlabel("$ amount spent on Radio advertising")
+plt.ylabel("Number of sales")
+plt.title("Number of sales per amount spent on Radio ads")
+plt.show()
+```
+ <p style='font-size:23px'>
+&emsp;&emsp;Comparing the two graphs highlights the clear linear relationship between TV advertisement spending and sales, contrasting with the inconsistency in radio advertising. The limitations of the linear model's fit to the radio data suggest a need for non-linear regression, indicating a potential requirement for a more curved or complex model to better represent this relationship.
 </p>
  <p style='font-size:23px'>
-&emsp;&emsp;
+&emsp;&emsp;Insights learned from this visualization suggest that the company's sales potential significantly benefits from TV advertising over radio. Armed with this data, a marketer could assert, "Increased investment in TV advertising directly correlates with higher sales." Conversely, the erratic nature of radio advertising data may prompt a recommendation to reconsider its budget allocation due to its scattered and less predictable impact on sales.
+</p>
+ <p style='font-size:23px'>
+&emsp;&emsp;Linear regression, a fundamental tool in machine learning, enables us to decipher relationships between variables. Our analysis highlighted its efficacy in predicting sales based on TV advertising spending. In conclusion, linear regression helps us with uncovering correlations, making predictions, guiding decisions, and so much more, becoming a versatile tool across diverse fields of study and application.
 </p>
 
 <br/>
 <br />
  <p style='font-size:15px'>
 Thank you!
+</p>
+ <p style='font-size:15px'>
+References: <a href="https://www.ibm.com/topics/linear-regression">IBM Linear Regression</a>
 </p>

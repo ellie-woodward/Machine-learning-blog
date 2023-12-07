@@ -9,7 +9,7 @@
 <meta name="author" content="Ellie Woodward">
 <meta name="dcterms.date" content="2023-11-10">
 
-<title>Clustering Earthquake Data</title>
+<title>Unearthing Insights: Clustering Earthquake Data for Patterns</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -136,7 +136,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Clustering Earthquake Data</h1>
+      <h1 class="title">Unearthing Insights: Clustering Earthquake Data for Patterns</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">code</div>
               </div>
@@ -189,25 +189,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <p style="font-size:23px">
-  Clustering is a concept that is used by people every day. We use clustering when we are organizing objects into meaningful categories. Think about the grocery store. All the produce is organized into one aisle, chips in another, and alcohol in a different part. Then we label those sections so when we want to find an apple, for example, we know to look in the produce section. This concept is also important for machine learning. When doing unsupervised learning we group unlabeled examples so we can visualize patterns in a dataset.
+  Clustering is pivotal in machine learning for its ability to unearth hidden patterns within datasets. By employing algorithms that group similar data points together based on shared characteristics, clustering enables us to discern valuable insights that might otherwise remain obscured. This process is particularly crucial in unsupervised learning, where the data lacks explicit labels or categories. Through clustering, we can reveal natural structures, identify trends, and segment data points, aiding in tasks like customer segmentation, anomaly detection, and image recognition. Essentially, clustering acts as a guiding light, enabling us to navigate and understand complex data landscapes, facilitating better decision-making and predictive modeling in machine learning applications.
 </p>
 <p style="font-size:23px">
-  For example, if we had a dataset that held all the registered earthquakes around the world in 2016 and we wanted to study the mild to extreme earthquakes (Magnitude 3 or above), we could use clustering. We can use DBSCAN (Density-Based Spatial Clustering of Applications with Noise) to group together earthquakes based on their density. DBSCAN will group together points on the plot that are close to each other, it does this by making the points the same color.
-</p>
+   For example, I found a dataset (<a href="https://corgis-edu.github.io/corgis/csv/earthquakes/">here</a><a>) encompassing global earthquake records from 2016. To focus on studying earthquakes ranging from moderate to severe intensity (Magnitude 3 or higher), clustering techniques serve as a valuable approach. In this scenario, leveraging clustering techniques becomes instrumental in extracting meaningful insights. One such clustering method suited for this task is DBSCAN (Density-Based Spatial Clustering of Applications with Noise). DBSCAN operates by identifying and grouping data points based on their density within a given proximity. Imagine plotting earthquake occurrences on a geographical map, with each point representing a seismic event. DBSCAN would efficiently cluster together points that are densely located, signifying regions or areas where earthquakes of comparable magnitudes cluster. Through this method, earthquakes nearby are visually represented with the same color, aiding in recognizing spatial patterns and clusters of seismic activity.
+</a></p><a>
 <p style="font-size:23px">
-  In the code below we are first managing our data. We are getting only the necessary points of interest by receiving the Magintude, Longitude and Latitude data then we are taking out all earthquakes that are registered under 3 Magintude. After that we are using DBSCAN. We are setting eps to 6, which means we are declaring how far away a point can be to still be considered a neighbor. Then we set the min samples to 4. This means there needs to be at least 4 registered earthquakes for it to be considered a cluster. This will mean we will have more sparse clusters.
+  In the code below, we start by refining our dataset, extracting the essential details such as Magnitude, Longitude, and Latitude. We filter out earthquakes with a magnitude under 3. Then, we implement DBSCAN. By setting ‘eps’ to 6, we define the proximity for points to be considered neighbors. Additionally, ‘min_samples’ is set to 4, requiring a minimum of four earthquakes to form a cluster. This configuration leads to the formation of sparser clusters due to the specified criteria.
 </p>
-<div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df_full <span class="op">=</span> pd.read_csv(<span class="st">"../../python-notebooks/datasets/earthquakes.csv"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df_full[[<span class="st">'Latitude'</span>,<span class="st">'Longitude'</span>,<span class="st">'Magnitude'</span>]]</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[df.Magnitude <span class="op">&gt;=</span> <span class="dv">3</span>]</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>dbscan <span class="op">=</span> DBSCAN(eps <span class="op">=</span> <span class="dv">6</span>, min_samples<span class="op">=</span><span class="dv">4</span>).fit(df) <span class="co"># fitting the model</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> dbscan.labels_ <span class="co"># getting the labels</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</a><div class="cell" data-execution_count="2"><a>
+</a><div class="sourceCode cell-code" id="cb2"><a></a><pre class="sourceCode python code-with-copy"><a><code class="sourceCode python"><span id="cb2-1"></span></code></a><code class="sourceCode python"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df_full <span class="op">=</span> pd.read_csv(<span class="st">"../../python-notebooks/datasets/earthquakes.csv"</span>)
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df_full[[<span class="st">'Latitude'</span>,<span class="st">'Longitude'</span>,<span class="st">'Magnitude'</span>]]</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[df.Magnitude <span class="op">&gt;=</span> <span class="dv">3</span>]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>dbscan <span class="op">=</span> DBSCAN(eps <span class="op">=</span> <span class="dv">6</span>, min_samples<span class="op">=</span><span class="dv">4</span>).fit(df) <span class="co"># fitting the model</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> dbscan.labels_ <span class="co"># getting the labels</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p style="font-size:23px">
-  In the graph below we can see our plotted data. Each cluster has its own color, then the singular red points are random earthquakes that don’t belong to a cluster. The larger points are the graph indicate a larger magnitude earthquake. We can use this visualization to see areas that have high earthquake activity.
+  The graph below illustrates our plotted data, with distinct colors representing different clusters, while isolated red points denote random earthquakes not associated with any cluster. Larger points on the graph indicate earthquakes of higher magnitude. This visualization provides a clear overview, enabling us to identify regions exhibiting significant earthquake activity.
 </p>
 <div class="cell" data-execution_count="3">
 <details>
@@ -232,11 +231,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p style="font-size:23px">
-  In this example we used clustering to group equakes together based on their proximity to each other. This is a great example of unsupervised learning. We took a raw data set and clustered the data points based on their similarities. From here we can view the clusters determine some patterns from the data. The algorithm itself doesn’t understand the data but when we view it, especially on the map, we can see the patterns of each cluster. We see that certain area of the world are more prone to earthquakes than others. I hope this blog post was helpful in your understanding of Clustering and unsupervised learning.
+  In this example, clustering served to group earthquakes based on their spatial proximity—a excellent application of unsupervised learning. Starting with raw data, we organized data points into clusters by identifying similarities. Subsequently, we explored these clusters to discern patterns within the data.
+</p>
+<p style="font-size:23px">
+  It’s important to note that the algorithm itself doesn’t interpret the data’s meaning. However, when visualized, particularly on a map, distinct patterns emerge within each cluster. This visualization vividly demonstrates that certain regions of the world are more susceptible to seismic activity than others.
+</p>
+<p style="font-size:23px">
+  I hope this blog post aids in your comprehension of Clustering and the realm of unsupervised learning, showcasing its utility in uncovering patterns and insights from unstructured data.
 </p><p>
 <br> <br>
 </p><p style="font-size:15px">
 Thank you!
+</p>
+<p style="font-size:15px">
+References: <a href="https://www.analyticsvidhya.com/blog/2020/09/how-dbscan-clustering-works/">DBSCAN</a> | <a href="https://developers.google.com/machine-learning/clustering">Google Clustering </a> | <a href="https://github.com/Saralkarki/Nepal_earthquake/blob/master/Nepal_Earthquake_Magnitude_Data_Analysis_and_Visualization%20.ipynb"> Inspiration</a>
 </p>
 
 
